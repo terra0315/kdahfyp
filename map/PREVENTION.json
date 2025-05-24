@@ -1,0 +1,107 @@
+{
+    "preventions": [
+        {
+            "state": "Selangor",
+            "region": "Pelabuhan Klang",
+            "calamity": "Flood",
+            "structure": "Water proof concrete foundation",
+            "prevention": [
+                "Install proper drainage systems suitable for coastal area conditions",
+                "Implement tidal gates and pump stations to manage water levels",
+                "Regular maintenance of port drainage infrastructure",
+                "Elevated storage facilities for goods and equipment"
+            ],
+            "precaution": [
+                "Monitor tide tables and weather forecasts regularly",
+                "Install flood barriers around critical infrastructure",
+                "Maintain emergency power generators above flood levels",
+                "Keep emergency evacuation routes clear and well-marked",
+                "Regular maintenance of storm drains and culverts",
+                "Install early warning systems for flash floods",
+                "Prepare emergency response kits for port workers"
+            ]
+        },
+        {
+            "state": "Selangor",
+            "region": "Klang Central",
+            "calamity": "Flood",
+            "structure": "Water proof concrete foundation",
+            "prevention": [
+                "Implement urban drainage improvement projects",
+                "Install flood retention ponds in key areas",
+                "Regular maintenance of drainage systems",
+                "Upgrade existing flood mitigation infrastructure"
+            ],
+            "precaution": [
+                "Monitor Klang River water levels",
+                "Maintain emergency communication systems",
+                "Keep important documents in waterproof storage",
+                "Prepare emergency evacuation plans",
+                "Install flood monitoring sensors in prone areas",
+                "Regular cleaning of storm drains",
+                "Establish community flood warning systems"
+            ]
+        },
+        {
+            "state": "Selangor",
+            "region": "Kapar",
+            "calamity": "Flood",
+            "structure": "Elevated building foundation",
+            "prevention": [
+                "Install proper drainage networks",
+                "Implement water retention areas",
+                "Regular maintenance of flood gates",
+                "Improve coastal protection measures"
+            ],
+            "precaution": [
+                "Monitor rainfall and tide levels",
+                "Maintain emergency power supplies",
+                "Keep evacuation routes accessible",
+                "Regular updates on weather conditions",
+                "Install flood barriers where necessary",
+                "Prepare community emergency response plans",
+                "Regular maintenance of drainage systems"
+            ]
+        },
+        {
+            "state": "Selangor",
+            "region": "Taman Berkeley",
+            "calamity": "Landslide",
+            "structure": "Retaining wall systems",
+            "prevention": [
+                "Install proper slope protection measures",
+                "Construct sturdy retaining walls",
+                "Implement proper drainage systems on slopes",
+                "Regular monitoring of slope stability",
+                "Use soil reinforcement techniques"
+            ],
+            "precaution": [
+                "Monitor ground movement during heavy rains",
+                "Maintain slope drainage systems",
+                "Regular inspection of retaining walls",
+                "Keep emergency evacuation routes clear",
+                "Install early warning systems for slope failures"
+            ]
+        },
+        {
+            "state": "Selangor",
+            "region": "Bukit Raja",
+            "calamity": "Landslide",
+            "structure": "Slope stabilization",
+            "prevention": [
+                "Install proper hillside drainage systems",
+                "Construct reinforced retaining walls",
+                "Implement soil nailing where necessary",
+                "Regular slope maintenance",
+                "Use ground anchoring systems"
+            ],
+            "precaution": [
+                "Monitor slope conditions during rainy seasons",
+                "Maintain drainage pathways",
+                "Regular inspection of stabilization structures",
+                "Install movement sensors on critical slopes",
+                "Prepare emergency response procedures"
+            ]
+        }
+    ]
+}

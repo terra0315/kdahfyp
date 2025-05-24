@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts - K-DAH</title>
+    <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .contact-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .contact-card:hover {
+            transform: translateY(-2px);
+        }
+        .contact-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: #006400;
+        }
+        .contact-info {
+            flex: 1;
+        }
+        .contact-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .map-container {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .category-header {
+            background: rgba(0, 100, 0, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-scroller">
+        <%- include('partials/_navbar') %>
+        <%- include('partials/_sidebar') %>
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">
+                        <span class="page-title-icon bg-gradient-primary text-white me-2">
+                            <i class="mdi mdi-phone-classic"></i>
+                        </span> Emergency Contacts
+                    </h3>
+                </div>
+
+                <!-- Emergency Contacts Section -->
+                <div class="row">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Emergency Services</h4>
+                                <div id="emergencyContacts">
+                                    <!-- Contacts will be dynamically populated -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Resources Section -->
+                <div class="row">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Local Resources & NGOs</h4>
+                                <div id="localResources">
+                                    <!-- Resources will be dynamically populated -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Facilities Map -->
+                <div class="row">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Emergency Facilities Map</h4>
+                                <div class="map-container" id="facilitiesMap"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map
+        const facilitiesMap = L.map('facilitiesMap').setView([3.0449, 101.4455], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(facilitiesMap);
+
+        // Update contacts and map based on selected area
+        function updateEmergencyContacts(area) {
+            const data = areaData[area];
+            if (!data) return;
+
+            // Update emergency contacts
+            const contactsContainer = document.getElementById('emergencyContacts');
+            contactsContainer.innerHTML = `
+                <div class="category-header">
+                    <h5>Emergency Services</h5>
+                </div>
+                ${data.contacts?.map(contact => `
+                    <div class="contact-card">
+                        <div class="d-flex align-items-center">
+                            <i class="mdi mdi-${contact.type} contact-icon"></i>
+                            <div class="contact-info">
+                                <h5 class="mb-1">${contact.name}</h5>
+                                <p class="mb-0">${contact.number}</p>
+                            </div>
+                            <div class="contact-actions">
+                                <button class="btn btn-outline-primary" onclick="callNumber('${contact.number}')">
+                                    <i class="mdi mdi-phone"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="showOnMap(${contact.coordinates})">
+                                    <i class="mdi mdi-map-marker"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+
+            // Update local resources
+            const resourcesContainer = document.getElementById('localResources');
+            resourcesContainer.innerHTML = `
+                <div class="category-header">
+                    <h5>Local Organizations</h5>
+                </div>
+                ${data.resources?.map(resource => `
+                    <div class="contact-card">
+                        <div class="d-flex align-items-center">
+                            <i class="mdi mdi-${resource.type} contact-icon"></i>
+                            <div class="contact-info">
+                                <h5 class="mb-1">${resource.name}</h5>
+                                <p class="mb-0">${resource.description}</p>
+                                <small class="text-muted">${resource.contact}</small>
+                            </div>
+                            <div class="contact-actions">
+                                <button class="btn btn-outline-primary" onclick="callNumber('${resource.contact}')">
+                                    <i class="mdi mdi-phone"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="showOnMap(${resource.coordinates})">
+                                    <i class="mdi mdi-map-marker"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+
+            // Update map markers
+            updateMapMarkers(area);
+        }
+
+        // Update map markers
+        function updateMapMarkers(area) {
+            // Clear existing markers
+            facilitiesMap.eachLayer(layer => {
+                if (layer instanceof L.Marker) {
+                    facilitiesMap.removeLayer(layer);
+                }
+            });
+
+            const data = areaData[area];
+            if (!data) return;
+
+            // Add emergency service markers
+            data.contacts?.forEach(contact => {
+                if (contact.coordinates) {
+                    L.marker(contact.coordinates, {
+                        icon: L.divIcon({
+                            className: `mdi mdi-${contact.type} marker-icon`,
+                            html: `<i class="mdi mdi-${contact.type}"></i>`,
+                            iconSize: [30, 30]
+                        })
+                    })
+                    .addTo(facilitiesMap)
+                    .bindPopup(contact.name);
+                }
+            });
+
+            // Add resource markers
+            data.resources?.forEach(resource => {
+                if (resource.coordinates) {
+                    L.marker(resource.coordinates, {
+                        icon: L.divIcon({
+                            className: `mdi mdi-${resource.type} marker-icon`,
+                            html: `<i class="mdi mdi-${resource.type}"></i>`,
+                            iconSize: [30, 30]
+                        })
+                    })
+                    .addTo(facilitiesMap)
+                    .bindPopup(resource.name);
+                }
+            });
+        }
+
+        // Call number function
+        function callNumber(number) {
+            window.location.href = `tel:${number}`;
+        }
+
+        // Show location on map
+        function showOnMap(coordinates) {
+            facilitiesMap.setView(coordinates, 15);
+            facilitiesMap.openPopup();
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            const area = localStorage.getItem('selectedArea') || 'Taman Sri Andalas';
+            updateEmergencyContacts(area);
+        });
+    </script>
+</body>
+</html> 

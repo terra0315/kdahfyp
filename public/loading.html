@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-DAH - Klang Disaster Awareness Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #006400;
+            --primary-dark: #004d00;
+            --bg: #000000;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Grid background */
+        .grid-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            z-index: 1;
+        }
+
+        .grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 100, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 100, 0, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform-origin: center;
+            transform-style: preserve-3d;
+            transform: rotateX(75deg);
+        }
+
+        /* Main content container */
+        .container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        /* Logo styling */
+        .logo-container {
+            position: relative;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .highlight {
+            color: var(--primary);
+        }
+
+        .slogan {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            opacity: 0;
+        }
+
+        /* Disaster icon elements */
+        .disaster-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .icon {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,100,0,0.7) 0%, rgba(0,100,0,0) 70%);
+            opacity: 0;
+        }
+
+        /* Loading progress elements */
+        .loading-bar-container {
+            width: 240px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin: 2rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .loading-text {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .percentage {
+            margin-left: 0.5rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        /* Countdown timer */
+        .countdown {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0;
+        }
+
+        .countdown-number {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        /* Enter button */
+        .enter-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .enter-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .enter-btn svg {
+            margin-left: 0.75rem;
+        }
+
+        /* Radar circle */
+        .radar-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .radar-circle {
+            position: absolute;
+            border: 1px solid rgba(0, 100, 0, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radar-circle:nth-child(1) {
+            width: 50px;
+            height: 50px;
+        }
+
+        .radar-circle:nth-child(2) {
+            width: 100px;
+            height: 100px;
+        }
+
+        .radar-circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+        }
+
+        .radar-circle:nth-child(4) {
+            width: 200px;
+            height: 200px;
+        }
+
+        .radar-sweep {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,100,0,0) 0%, rgba(0,100,0,0.5) 100%);
+            transform-origin: left center;
+            border-radius: 0 100% 100% 0;
+            opacity: 0.7;
+        }
+
+        .blip {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff00;
+            opacity: 0;
+        }
+
+        /* Transition overlay */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg);
+            z-index: 100;
+            clip-path: circle(0% at center);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay-logo {
+            color: var(--text);
+            font-size: 4rem;
+            font-weight: 700;
+            opacity: 0;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .radar-container {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .radar-circle:nth-child(4) {
+                width: 160px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grid background -->
+    <div class="grid-container">
+        <div class="grid"></div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <h1 class="logo-text">K-<span class="highlight">DAH</span></h1>
+            <p class="slogan">Empowering Klang residents</p>
+        </div>
+
+        <!-- Radar animation -->
+        <div class="radar-container">
+            <div class="radar-circle"></div>
+            <div class="radar-circle"></div>
+            <div class="radar-circle"></div>
+            <div class="radar-circle"></div>
+            <div class="radar-sweep"></div>
+            <div class="blip" style="top: 30%; left: 65%;"></div>
+            <div class="blip" style="top: 70%; left: 40%;"></div>
+            <div class="blip" style="top: 25%; left: 35%;"></div>
+            <div class="blip" style="top: 60%; left: 75%;"></div>
+            <div class="blip" style="top: 50%; left: 20%;"></div>
+        </div>
+
+        <!-- Loading bar -->
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+
+        <!-- Loading text -->
+        <div class="loading-text">
+            <span>Loading disaster data</span>
+            <span class="percentage">0%</span>
+        </div>
+
+        <!-- Countdown timer -->
+        <div class="countdown">
+            Auto-redirecting in <span class="countdown-number">5</span> seconds
+        </div>
+
+        <!-- Enter button -->
+        <button class="enter-btn" id="enterBtn">
+            Enter System
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Disaster icons scattered -->
+    <div class="disaster-icons">
+        <div class="icon" style="top: 20%; left: 10%;"></div>
+        <div class="icon" style="top: 30%; left: 80%;"></div>
+        <div class="icon" style="top: 50%; left: 20%;"></div>
+        <div class="icon" style="top: 70%; left: 85%;"></div>
+        <div class="icon" style="top: 15%; left: 40%;"></div>
+        <div class="icon" style="top: 80%; left: 30%;"></div>
+        <div class="icon" style="top: 60%; left: 65%;"></div>
+        <div class="icon" style="top: 25%; left: 70%;"></div>
+    </div>
+
+    <!-- Transition overlay -->
+    <div class="transition-overlay">
+        <h1 class="overlay-logo">K-<span class="highlight">DAH</span></h1>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize GSAP timeline
+            const tl = gsap.timeline();
+            
+            // Grid animation
+            tl.to('.grid', {
+                duration: 20,
+                backgroundSize: '50px 50px',
+                repeat: -1,
+                ease: 'none'
+            });
+            
+            // Logo animation
+            tl.from('.logo-text', {
+                y: -50,
+                opacity: 0,
+                duration: 1,
+                ease: 'back.out(1.7)'
+            }, 0);
+            
+            tl.to('.slogan', {
+                opacity: 1,
+                duration: 1,
+                delay: 0.3
+            }, 0);
+            
+            // Radar sweep animation
+            gsap.to('.radar-sweep', {
+                rotation: 360,
+                duration: 4,
+                repeat: -1,
+                ease: 'none',
+                transformOrigin: 'left center'
+            });
+            
+            // Blips animation
+            gsap.utils.toArray('.blip').forEach(blip => {
+                gsap.to(blip, {
+                    opacity: 1,
+                    duration: 0.3,
+                    delay: Math.random() * 2,
+                    repeat: -1,
+                    yoyo: true,
+                    repeatDelay: Math.random() * 3
+                });
+            });
+            
+            // Disaster icons pulsing
+            gsap.utils.toArray('.icon').forEach((icon, i) => {
+                gsap.to(icon, {
+                    opacity: 0.7,
+                    scale: 1.5,
+                    duration: 2,
+                    delay: i * 0.2,
+                    repeat: -1,
+                    yoyo: true
+                });
+            });
+            
+            // Loading bar progress
+            let progress = { value: 0 };
+            const progressBar = document.querySelector('.loading-bar');
+            const percentageText = document.querySelector('.percentage');
+            const enterBtn = document.getElementById('enterBtn');
+            
+            gsap.to(progress, {
+                value: 100,
+                duration: 3.5,
+                ease: 'power1.inOut',
+                onUpdate: () => {
+                    const value = Math.round(progress.value);
+                    progressBar.style.width = `${value}%`;
+                    percentageText.textContent = `${value}%`;
+                },
+                onComplete: () => {
+                    gsap.to('.loading-text', {
+                        opacity: 0,
+                        duration: 0.5,
+                        onComplete: () => {
+                            document.querySelector('.loading-text').textContent = 'Ready';
+                            gsap.to('.loading-text', {
+                                opacity: 1,
+                                duration: 0.5
+                            });
+                        }
+                    });
+                    
+                    gsap.to('.enter-btn', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'back.out(1.7)'
+                    });
+                    
+                    // Show countdown after loading completes
+                    gsap.to('.countdown', {
+                        opacity: 1,
+                        duration: 0.7,
+                        delay: 0.3
+                    });
+                    
+                    // Start countdown
+                    startCountdown();
+                }
+            });
+            
+            // Countdown functionality
+            let countdownValue = 5;
+            let countdownInterval;
+            let isPaused = false;
+            
+            function startCountdown() {
+                // Clear any existing interval
+                if (countdownInterval) clearInterval(countdownInterval);
+                
+                countdownInterval = setInterval(() => {
+                    if (!isPaused) {
+                        countdownValue--;
+                        document.querySelector('.countdown-number').textContent = countdownValue;
+                        
+                        if (countdownValue <= 0) {
+                            clearInterval(countdownInterval);
+                            enterBtn.click();
+                        }
+                    }
+                }, 1000);
+            }
+            
+            // Pause countdown on hover
+            enterBtn.addEventListener('mouseenter', () => {
+                isPaused = true;
+                document.querySelector('.countdown').innerHTML = 'Countdown <span class="countdown-number">paused</span>';
+            });
+            
+            enterBtn.addEventListener('mouseleave', () => {
+                isPaused = false;
+                document.querySelector('.countdown').innerHTML = `Auto-redirecting in <span class="countdown-number">${countdownValue}</span> seconds`;
+            });
+            
+            // Click handler for enter button
+            enterBtn.addEventListener('click', () => {
+                // Clear the countdown interval when button is clicked
+                clearInterval(countdownInterval);
+                
+                const overlay = document.querySelector('.transition-overlay');
+                const overlayLogo = document.querySelector('.overlay-logo');
+                
+                // First part: expand the circle and fade in logo
+                gsap.to(overlay, {
+                    clipPath: 'circle(150% at center)',
+                    duration: 1.2,
+                    ease: 'power3.inOut'
+                });
+                
+                gsap.to(overlayLogo, {
+                    opacity: 1,
+                    duration: 0.8,
+                    delay: 0.2,
+                    scale: 1.2,
+                    ease: 'power1.out',
+                    onComplete: () => {
+                        // Second part: logo pulse and redirect
+                        gsap.to(overlayLogo, {
+                            scale: 1,
+                            duration: 0.5,
+                            ease: 'elastic.out(1, 0.3)',
+                            onComplete: () => {
+                                // Save session state and redirect
+                                sessionStorage.setItem('k_dah_loaded', 'true');
+                                setTimeout(() => {
+                                    window.location.href = 'index.html?loaded=true';
+                                }, 300);
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Check if we're at risk of an infinite loop
+            if (sessionStorage.getItem('k_dah_loaded') === 'true' && 
+                window.location.href.indexOf('loaded=true') === -1) {
+                sessionStorage.removeItem('k_dah_loaded');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4444, 3.0333]
+      },
+      "properties": {
+        "district": "Klang Central",
+        "fatalities": 2,
+        "no_of_camps": 15,
+        "actual_rainfall_in_mm": 450.2,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 1,
+        "full_damaged_houses": 23
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4048, 3.0008]
+      },
+      "properties": {
+        "district": "Port Klang",
+        "fatalities": 1,
+        "no_of_camps": 12,
+        "actual_rainfall_in_mm": 482.5,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 0,
+        "full_damaged_houses": 31
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.3692, 3.1209]
+      },
+      "properties": {
+        "district": "Kapar",
+        "fatalities": 0,
+        "no_of_camps": 8,
+        "actual_rainfall_in_mm": 425.8,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 0,
+        "full_damaged_houses": 15
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4583, 3.0486]
+      },
+      "properties": {
+        "district": "Taman Sri Andalas",
+        "fatalities": 1,
+        "no_of_camps": 6,
+        "actual_rainfall_in_mm": 445.6,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 2,
+        "full_damaged_houses": 18
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4726, 3.0674]
+      },
+      "properties": {
+        "district": "Bukit Raja",
+        "fatalities": 0,
+        "no_of_camps": 5,
+        "actual_rainfall_in_mm": 430.2,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 1,
+        "full_damaged_houses": 12
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4157, 3.0567]
+      },
+      "properties": {
+        "district": "Bandar Klang",
+        "fatalities": 1,
+        "no_of_camps": 7,
+        "actual_rainfall_in_mm": 438.9,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 0,
+        "full_damaged_houses": 20
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4512, 3.0123]
+      },
+      "properties": {
+        "district": "Taman Berkeley",
+        "fatalities": 0,
+        "no_of_camps": 9,
+        "actual_rainfall_in_mm": 442.3,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 0,
+        "full_damaged_houses": 16
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4238, 3.0789]
+      },
+      "properties": {
+        "district": "Telok Gadong",
+        "fatalities": 1,
+        "no_of_camps": 4,
+        "actual_rainfall_in_mm": 428.7,
+        "normal_rainfall_in_mm": 250.0,
+        "no_of_landslides": 0,
+        "full_damaged_houses": 14
+      }
+    }
+  ]
+}

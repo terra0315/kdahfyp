@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Disaster Management and Climate Change Stopping, Monitoring, Awareness</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sliderpp.css">
+
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="assets/images/favicon.ico" />
+
+
+  <!-- Head -->
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+
+  <!-- d3 JavaScript-->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="../map/static/css/style.css">
+
+
+  <link rel="stylesheet" href="../map/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="../map/dist/MarkerCluster.Default.css">
+
+  <script src="../map/dist/leaflet.markercluster.js"></script>
+
+  <!-- Add this style block here -->
+  <style>
+  #mapid {
+      height: 400px;
+      width: 100%;
+      z-index: 1;
+  }
+  </style>
+
+  <style>
+    .leaflet-popup-content {
+        margin: 10px;
+        text-align: center;
+    }
+    
+    .leaflet-popup-content a:hover {
+        text-decoration: underline !important;
+        color: #004d00 !important;
+    }
+  </style>
+
+  <!-- Add dark mode toggle button -->
+  <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round"></div>
+      </label>
+      <em>Dark Mode</em>
+  </div>
+
+  <!-- Update styles -->
+  <style>
+      :root {
+          --primary-color: #006400;
+          --secondary-color: #008000;
+          --text-color: #f8f9fa;
+          --bg-color: #121212;
+          --card-bg: #1e1e1e;
+          --border-color: #333;
+          --success-color: #34d058;
+          --warning-color: #ffd33d;
+          --danger-color: #d73a49;
+      }
+
+      body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          transition: all 0.3s ease;
+      }
+
+      .card {
+          background-color: var(--card-bg);
+          border: 1px solid var(--border-color);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+      }
+
+      .theme-switch-wrapper {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+      }
+
+      .theme-switch {
+          display: inline-block;
+          height: 34px;
+          position: relative;
+          width: 60px;
+      }
+
+      .theme-switch input {
+          display: none;
+      }
+
+      .slider {
+          background-color: #ccc;
+          bottom: 0;
+          cursor: pointer;
+          left: 0;
+          position: absolute;
+          right: 0;
+          top: 0;
+          transition: .4s;
+      }
+
+      .slider:before {
+          background-color: #fff;
+          bottom: 4px;
+          content: "";
+          height: 26px;
+          left: 4px;
+          position: absolute;
+          transition: .4s;
+          width: 26px;
+      }
+
+      input:checked + .slider {
+          background-color: var(--primary-color);
+      }
+
+      input:checked + .slider:before {
+          transform: translateX(26px);
+      }
+
+      .slider.round {
+          border-radius: 34px;
+      }
+
+      .slider.round:before {
+          border-radius: 50%;
+      }
+
+      .marker-icon {
+          background-color: white;
+          border-radius: 50%;
+          padding: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .marker-icon i {
+          font-size: 24px;
+          color: var(--primary-color);
+      }
+
+      .course {
+          background-color: var(--card-bg);
+          border: 1px solid var(--border-color);
+      }
+
+      .course-preview {
+          background-color: var(--primary-color);
+      }
+
+      .btn-gradient-primary {
+          background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+      }
+  </style>
+
+  <script>
+      const riskZones = {
+          high: { color: '#dc3545', fillOpacity: 0.3 },
+          medium: { color: '#ffc107', fillOpacity: 0.3 },
+          low: { color: '#28a745', fillOpacity: 0.3 }
+      };
+
+      const evacuationRouteStyle = {
+          color: '#ff6b6b',
+          weight: 4,
+          dashArray: '10, 10'
+      };
+
+      let map;
+      let currentArea = 'Klang Central';
+      let riskZoneLayer;
+      let evacuationRouteLayer;
+      let facilityLayer;
+
+      function initMap() {
+          map = L.map('map').setView([3.0449, 101.4455], 12);
+          
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+
+          // Create layer groups
+          riskZoneLayer = L.layerGroup();
+          evacuationRouteLayer = L.layerGroup();
+          facilityLayer = L.layerGroup();
+
+          // Add layers to map
+          map.addLayer(riskZoneLayer);
+          map.addLayer(evacuationRouteLayer);
+          map.addLayer(facilityLayer);
+
+          // Layer control
+          L.control.layers(null, {
+              "Flood Prone Areas": riskZoneLayer,
+              "Evacuation Routes": evacuationRouteLayer,
+              "Emergency Facilities": facilityLayer
+          }, {
+              collapsed: false
+          }).addTo(map);
+
+          updateMapLayers();
+      }
+
+      function updateMapLayers() {
+          if (riskZoneLayer) map.removeLayer(riskZoneLayer);
+          if (evacuationRouteLayer) map.removeLayer(evacuationRouteLayer);
+          if (facilityLayer) map.removeLayer(facilityLayer);
+
+          const area = areaData[currentArea];
+          
+          // Add risk zones
+          riskZoneLayer = L.layerGroup();
+          area.floodProneAreas.forEach(zone => {
+              const polygon = L.polygon(zone.coords, {
+                  color: '#006400',
+                  fillColor: '#006400',
+                  fillOpacity: 0.2
+              });
+              riskZoneLayer.addLayer(polygon);
+          });
+          riskZoneLayer.addTo(map);
+
+          // Add evacuation routes
+          evacuationRouteLayer = L.layerGroup();
+          area.evacuationRoutes.forEach(route => {
+              const polyline = L.polyline(route.path, {
+                  color: '#ff6b6b',
+                  weight: 4,
+                  dashArray: '10, 10'
+              });
+              evacuationRouteLayer.addLayer(polyline);
+          });
+          evacuationRouteLayer.addTo(map);
+
+          // Add facilities
+          facilityLayer = L.layerGroup();
+          area.contacts.forEach(contact => {
+              if (contact.coordinates) {
+                  const marker = L.marker(contact.coordinates, {
+                      icon: L.divIcon({
+                          className: `mdi mdi-${contact.type} marker-icon`,
+                          html: `<i class="mdi mdi-${contact.type}"></i>`,
+                          iconSize: [40, 40]
+                      })
+                  });
+                  facilityLayer.addLayer(marker);
+              }
+          });
+          facilityLayer.addTo(map);
+      }
+
+      // Initialize map when document is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+          initMap();
+          
+          // Add area selection event listeners
+          document.getElementById('inputDistrict').addEventListener('change', function() {
+              currentArea = this.value;
+              updateMapLayers();
+          });
+
+          // Add event listeners for layer toggles
+          document.getElementById('floodZones').addEventListener('change', function() {
+              if (this.checked) {
+                  map.addLayer(riskZoneLayer);
+              } else {
+                  map.removeLayer(riskZoneLayer);
+              }
+          });
+
+          document.getElementById('evacuationRoutes').addEventListener('change', function() {
+              if (this.checked) {
+                  map.addLayer(evacuationRouteLayer);
+              } else {
+                  map.removeLayer(evacuationRouteLayer);
+              }
+          });
+
+          document.getElementById('emergencyFacilities').addEventListener('change', function() {
+              if (this.checked) {
+                  map.addLayer(facilityLayer);
+              } else {
+                  map.removeLayer(facilityLayer);
+              }
+          });
+      });
+
+      // Make sure the map renders correctly
+      setTimeout(() => {
+          if (map) map.invalidateSize();
+      }, 100);
+  </script>
+
+</head>
+
+<body>
+  <div class="container-scroller">
+
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" href="../../index.html">
+          K-DAH</a>
+        <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../assets/images/logo-mini.svg"
+            alt="logo" /></a>
+      </div>
+
+      <div class="navbar-menu-wrapper d-flex align-items-stretch">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="mdi mdi-menu"></span>
+        </button>
+        <div class="search-field d-none d-md-block">
+          <form class="d-flex align-items-center h-100" action="#">
+
+          </form>
+        </div>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item d-none d-lg-block full-screen-link">
+            <a class="nav-link">
+              <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+            </a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+              data-bs-toggle="dropdown">
+              <i class="mdi mdi-bell-outline"></i>
+              <span class="count-symbol bg-danger"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+              aria-labelledby="notificationDropdown">
+              <h6 class="p-3 mb-0">Notifications</h6>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-success">
+                    <i class="mdi mdi-calendar"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                  <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
+                  <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today </p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-warning">
+                    <i class="mdi mdi-settings"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                  <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
+                  <p class="text-gray ellipsis mb-0"> Update dashboard </p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-info">
+                    <i class="mdi mdi-link-variant"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                  <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
+                  <p class="text-gray ellipsis mb-0"> New admin wow! </p>
+                </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <h6 class="p-3 mb-0 text-center">See all notifications</h6>
+            </div>
+          </li>
+          <li class="nav-item nav-logout d-none d-lg-block">
+            <a class="nav-link" href="#">
+              <i class="mdi mdi-power"></i>
+            </a>
+          </li>
+
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <span class="menu-title">Dashboard</span>
+              <i class="mdi mdi-home menu-icon"></i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+
+            <form action="/chartsjsp" class="nav-link" id="newChart" method="post">
+              <!-- <a class="nav-link" href="/chartsjs"> -->
+              <button style="background-color: transparent; border: none;">
+                <span class="menu-title">
+                  <b>Charts</b>
+                  &emsp;
+                  &emsp; &emsp; &emsp; &emsp; &emsp;
+                  &emsp;</span>
+
+                <i class="mdi mdi-chart-bar menu-icon"></i>
+                <!-- </a> -->
+              </button>
+
+              <input type="text" name="homireg" placeholder="2nd numm" id="ttid3ho" style="visibility: hidden;">
+
+
+              <script>
+                document.getElementById("ttid3ho").value = '<%usl.forEach( users=>{ %><%=users.reg_name%><%})%>';
+                console.log("homi inputbox = " + document.getElementById("ttid3ho").value);
+                console.log("homi direct = " + '<%usl.forEach(users=>{%><%=users.reg_name%><%})%>');
+
+              </script>
+
+            </form>
+          </li>
+
+
+
+          <!-- Remove or comment out these four nav items -->
+          <!--
+          <li class="nav-item">
+            <a class="nav-link" href="" target="_blank">
+              <span class="menu-title">Flood prediction</span>
+              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="" target="_blank">
+              <span class="menu-title">Earthquake 3D</span>
+              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="" target="_blank">
+              <span class="menu-title">Forest Fire Prediction</span>
+              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+          </li>
+
+           <li class="nav-item">
+            <a class="nav-link" href="" target="_blank">
+              <span class="menu-title">Disaster Response Chatbot</span>
+              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+          </li> 
+          -->
+
+
+          <!-- <li class="nav-item">
+
+            <form action="/earthqq" class="nav-link" id="newChart" method="post">
+              <button style="background-color: transparent; border: none;">
+                <span class="menu-title">
+                  <b>Earth</b>
+                  &emsp;
+                  &emsp; &emsp; &emsp; &emsp; &emsp;
+                  &emsp;</span>
+
+                <i class="mdi mdi-chart-bar menu-icon"></i>
+                 </a> -->
+          </button>
+
+          <input type="text" name="homireg22" placeholder="2nd numm" id="ttid3ho22" style="visibility: hidden;">
+
+
+          <script>
+            document.getElementById("ttid3ho22").value = '<%usl.forEach( users=>{ %><%=users.reg_name%><%})%>';
+            console.log("homi inputbox = " + document.getElementById("ttid3ho22").value);
+            console.log("homi direct = " + '<%usl.forEach(users=>{%><%=users.reg_name%><%})%>');
+
+          </script>
+
+          </form>
+          </li> -->
+
+
+
+
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="page-header">
+            <h3 class="page-title">
+              <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+              </span> Dashboard
+            </h3>
+          </div>
+
+
+          <div class="row">
+
+            <!-- ----------- Prayag Card  Start ---------------------- -->
+
+            <style>
+              @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+              * {
+                box-sizing: border-box;
+              }
+
+
+
+              .course {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                display: flex;
+                max-width: 100%;
+                margin: 20px;
+                overflow: hidden;
+                width: 700px;
+              }
+
+              .course h6 {
+                opacity: 0.6;
+                margin: 0;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+              }
+
+              .course h2 {
+                letter-spacing: 1px;
+                margin: 10px 0;
+              }
+
+              .course-preview {
+                background-color: #2A265F;
+                color: #fff;
+                padding: 30px;
+                max-width: 250px;
+              }
+
+              .course-preview a {
+                color: #fff;
+                display: inline-block;
+                font-size: 12px;
+                opacity: 0.6;
+                margin-top: 30px;
+                text-decoration: none;
+              }
+
+              .course-info {
+                padding: 30px;
+                position: relative;
+                width: 100%;
+              }
+
+              .progress-container {
+                position: absolute;
+                top: 30px;
+                right: 30px;
+                text-align: right;
+                width: 150px;
+              }
+
+              .progress {
+                background-color: #ddd;
+                border-radius: 3px;
+                height: 5px;
+                width: 100%;
+              }
+
+              .progress::after {
+                border-radius: 3px;
+                background-color: #2A265F;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 5px;
+                width: 66%;
+              }
+
+              .progress-text {
+                font-size: 10px;
+                opacity: 0.6;
+                letter-spacing: 1px;
+              }
+
+              .btn {
+                background-color: #2A265F;
+                border: 0;
+                border-radius: 50px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                color: #fff;
+                font-size: 16px;
+                padding: 12px 25px;
+                position: absolute;
+                bottom: 30px;
+                right: 30px;
+                letter-spacing: 1px;
+              }
+            </style>
+
+            <div class="col-md-5 grid-margin stretch-card" style=" width: 58%; height: 20rem;">
+              <div class="course">
+                <div class="course-preview">
+
+                  <p style="color: rgb(252, 235, 235);font-size: 20px;">
+                    <b>
+                      <% usl.forEach( users=>{ %> <%= users.reg_label %>
+                          <% }) %>
+                    </b>
+                  </p>
+
+
+                  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+                  <i class="fa fa-map-marker" id="myP" style="font-size:70px;color:lightblue;"></i>
+
+                  <button type="button" onclick="myFunction()" style="width: 0;visibility: hidden;opacity: 0;"></button>
+
+                  <script>
+                    myFunction();
+                    function myFunction() {
+                      document.getElementById("myP").style.color = '<% usl.forEach( users=>{ %> <%= users.reg_color %><% }) %>';
+                    }
+                  </script>
+                  <p style="color: rgb(252, 235, 235);font-size: 12px;">
+                    <b>
+                      <% usl.forEach( users=>{ %> <%= users.reg_data1 %>
+                          <% }) %>
+                    </b>
+                  </p>
+
+                </div>
+                <div class="course-info"
+                  style="background-image: url('https://thumbs.dreamstime.com/b/maharashtra-state-india-zoomed-pattern-shape-its-capital-isolated-solid-background-distance-scale-region-preview-193798611.jpg');">
+                  <div class="progress-container">
+
+
+
+                    <link href="https://fonts.googleapis.com/css?family=Maven+Pro&display=swap" rel="stylesheet">
+                    <link rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+                    <style>
+                      #myprogress {
+                        width: 80%;
+                        height: 8px;
+                        background: grey;
+                        margin: auto;
+                      }
+
+                      #mybar {
+                        width: 1%;
+                        height: 8px;
+                        background: #48d18f;
+                        color: white;
+                        text-align: center;
+                      }
+                    </style>
+
+
+
+                    <div id="myprogress">
+                      <div id="mybar">
+                        <span id="incvalue">1%</span>
+                      </div>
+                    </div>
+
+
+                    <script>
+
+                      var elem = document.getElementById("mybar");
+                      var width = 1;
+                      var id = setInterval(frame, 10)
+
+                      function frame() {
+                        if (width >= 100) {
+                          clearInterval(id);
+                        } else {
+                          width++;
+                          elem.style.width = '<% usl.forEach( users=>{ %> <%= users.chg_data %>  <% }) %>';
+                          document.getElementById("incvalue").innerHTML = "-";
+
+                        }
+                      }
+
+                    </script>
+                    <span class="progress-text" style="color: rgb(15, 14, 14);font-size: 12px">
+                      <b> 6/9 Challenges</span><b>
+                      </span>
+
+                  </div>
+                  <h6 style="color: rgb(0, 0, 0);">STATE:
+                    <% usl.forEach( users=>{ %> <%= users.state %>
+                        <% }) %>
+                  </h6>
+                  <br />
+
+                  <h6 style="opacity:0;">c</h6>
+                  <h2 style="color: black;"><b>REGION:
+
+                      <% usl.forEach( users=>{ %> <%= users.reg_name %>
+                          <% }) %>
+                            <b></h2><br />
+                  <span style="font-size: 14px;">Increased by 60%</span><span
+                    style="opacity: 0;">xnjn</span><span></span>
+
+                  <a href="http://192.168.200.250:8501" target="_blank"><button class="btn">Look more >></button></a>
+                </div>
+              </div>
+            </div>
+            <!-- ----------- Prayag Card  End ---------------------- -->
+
+
+
+
+
+            <!-- ------------ Form -------------------------------- -->
+
+            <div class="col-md-5 grid-margin stretch-card" style="float:right; margin-top: -21rem;">
+              <div class="card" style="border-radius: 0.7rem;">
+                <div class="card-body">
+                  <h4 class="card-title">Region</h4>
+                  <div id="whole">
+                    <section>
+                      <form class="forms-sample">
+                        <div class="form-group">
+                          <label for="inputState">State</label>
+                          <select class="form-control" id="inputState" onchange="llp()" style="color: black;">
+                              <option value="SelectState">Select State</option>
+                              <option value="Selangor">Selangor</option>
+                          </select>
+                      </div>
+                        <div class="form-group">
+                          <label for="exampleInputCity1">Area</label>
+                          <select class="form-control" id="inputDistrict" style="color: black;">
+                              <option value="">-- select one -- </option>
+                              <option value="Klang Central">Klang Central</option>
+                              <option value="Bandar Puteri">Bandar Puteri</option>
+                              <option value="Kapar">Kapar</option>
+                              <option value="Taman Berkeley">Taman Berkeley</option>
+                              <option value="Bukit Raja">Bukit Raja</option>
+                              <option value="Telok Gadong">Telok Gadong</option>
+                              <option value="Bandar Klang">Bandar Klang</option>
+                              <option value="Taman Sri Andalas">Taman Sri Andalas</option>
+                              <option value="Pandamaran">Pandamaran</option>
+                              <option value="Klang Utara">Klang Utara</option>
+                              <option value="Klang Selatan">Klang Selatan</option>
+                              <option value="Bandar Botanic">Bandar Botanic</option>
+                            <option value="Bandar Sentosa">Bandar Sentosa</option>
+                              <option value="Bandar Bukit Tinggi">Bandar Bukit Tinggi</option>
+                          </select>
+                        </div>
+
+
+
+                        <br>
+                        <input id="submitID" type="button" value="Submit" class="btn btn-gradient-primary me-2"
+                          onclick="latilong()">
+                      </form>
+
+                    </section>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ------------------------- Map ------------------------------------ -->
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Interactive Map</h4>
+                        <div class="map-controls mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="floodZones" checked>
+                                <label class="form-check-label" for="floodZones">Flood Prone Areas</label>
+              </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="evacuationRoutes" checked>
+                                <label class="form-check-label" for="evacuationRoutes">Evacuation Routes</label>
+            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="emergencyFacilities" checked>
+                                <label class="form-check-label" for="emergencyFacilities">Emergency Facilities</label>
+                            </div>
+                        </div>
+                        <div id="map" style="height: 500px; border-radius: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <!-- -------------------- Two Buttons ---------------------------------- -->
+
+
+
+          <div class="row">
+            <!-- <div class="col-12 grid-margin"> -->
+            <div class="card">
+              <div class="card-body">
+                <!-- <h4 class="card-title">Hiii</h4> -->
+
+                <div class="row" style="background-color: rgb(201, 199, 199);">
+
+                  <!-- -------First---------- -->
+
+
+                  <!-- <div class="col-md-5 grid-margin stretch-card">
+                      <div class="card" style="color: aqua;">
+                        <div class="card-body">
+                          <h4 class="card-title">Precautions</h4>
+                          <video autoplay="autoplay" loop="loop" muted="" width="100%" height="auto">
+                            <source
+                              src="https://acropolis-wp-content-uploads.s3.us-west-1.amazonaws.com/earth-resistant.mp4"
+                              type="video/mp4">
+                          </video> 
+                        </div>
+                      </div>
+                    </div> -->
+
+
+                  <div class="col-md-7 grid-margin stretch-card">
+                    <div class="card">
+
+                    </div>
+
+                  </div>
+                  <!-- 
+                  ------------------------------------------------------------------------------------------------------ -->
+                  <div class="col-md-12 grid-margin stretch-card" style="color: black;">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Region Statistics</h4>
+
+
+                        <!-- <p style="font-size: 16px;" id="selected_region4"></p> -->
+
+                        <script>
+
+                          function llp() {
+                            fetch("/map/PREVENTION.json")
+                              .then(response => response.json())
+                              .then(data => {
+                                const selectedState = inputState.value;
+                                const selectedDistrict = inputDistrict.value;
+                                
+                                const defaultData = {
+                                    calamity: "Various Urban Hazards",
+                                    structure: "Mixed Urban Development",
+                                    prevention: [
+                                        "Regular infrastructure maintenance",
+                                        "Emergency response planning",
+                                        "Community awareness programs",
+                                        "Local disaster preparedness"
+                                    ]
+                                };
+
+                                const selectedArea = areaData[selectedDistrict] || defaultData;
+
+                                document.getElementById("selected_region").textContent = `${selectedDistrict}, Klang`;
+                                document.getElementById("selected_region2").textContent = selectedArea.calamity;
+                                document.getElementById("selected_region3").textContent = selectedArea.structure;
+
+                                const preventionList = document.getElementById("selected_region4");
+                                const listItems = selectedArea.prevention.map(measure => `<li>${measure}</li>`).join("");
+                                preventionList.innerHTML = `<ul>${listItems}</ul>`;
+
+                                const generalPrecautions = [
+                                    "Monitor local weather forecasts regularly",
+                                    "Keep emergency contact numbers handy",
+                                    "Know your evacuation routes",
+                                    "Maintain emergency supplies",
+                                    "Follow local authority guidelines during emergencies",
+                                    "Participate in community disaster preparedness programs"
+                                ];
+
+                                const preventionList1 = document.getElementById("selected_region5");
+                                const listItems1 = generalPrecautions.map(measure => `<li>${measure}</li>`).join("");
+                                preventionList1.innerHTML = `<ul>${listItems1}</ul>`;
+
+                                document.getElementById("hidee1").style.display = "none";
+                                document.getElementById("precaution1").style.display = "none";
+                              });
+                          }
+                        </script>
+
+
+                        <p style="font-size: 20px;"> <span>Your Region: &nbsp;</span> <span id="selected_region"></span>
+                        </p>
+                        <p style="font-size: 20px;"> <span>Calamity: &nbsp;</span> <span id="selected_region2"></span>
+                        </p>
+                        <p style="font-size: 20px;"> <span>Structure: &nbsp;</span> <span id="selected_region3"></span>
+                        </p>
+
+
+                        <!-- <p class="mb-0 font-weight-light" id="hidee1" style="justify-content: center;">
+                            This method involves placing dampers at each level of a building between columns and beams.
+                            Each damper consists of piston heads inside a cylinder filled with silicone oil. When an
+                            earthquake occurs, the building transfers the vibrational energy into the pistons, which
+                            push against the oil. The energy is then transformed into heat, dissipating the force of the
+                            vibrations.</p> -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ------------Second----------- -->
+
+                  <div class="col-md-6 grid-margin stretch-card" style="color: black;">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Precautions</h4>
+
+
+                        <p style="font-size: 18px;font-family: ubuntu-light, Times, serif;" id="selected_region4">
+                        </p>
+
+
+                        <!-- <p class="mb-0 font-weight-light" id="hidee1" style="justify-content: center;">
+                            This method involves placing dampers at each level of a building between columns and beams.
+                            Each damper consists of piston heads inside a cylinder filled with silicone oil. When an
+                            earthquake occurs, the building transfers the vibrational energy into the pistons, which
+                            push against the oil. The energy is then transformed into heat, dissipating the force of the
+                            vibrations.</p> -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="clearfix">
+                          <h4 class="card-title float-left">Preventions</h4>
+
+                          <p style="font-size: 18px;font-family: ubuntu-light, Times, serif;" id="selected_region5"></p>
+
+                          <!-- <video autoplay="autoplay" loop="loop" muted="" width="100%" height="auto">
+                              <source
+                                src="https://acropolis-wp-content-uploads.s3.us-west-1.amazonaws.com/vibration-control-v3.mp4"
+                                type="video/mp4">
+                            </video> -->
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+
+
+                  <!-- <div class="row mt-3">
+                    <div class="col-6 pe-1">
+                      <video autoplay="autoplay" loop="loop" muted="" width="100%" height="auto">
+                        <source
+                          src="https://acropolis-wp-content-uploads.s3.us-west-1.amazonaws.com/-resistant.mp4"
+                          type="video/mp4">
+                      </video>
+                      <p>HEllo</p>
+                    </div>
+                     <div class="col-6 ps-1">
+                      <img src="assets/images/dashboard/img_2.jpg" class="mb-2 mw-100 w-100 rounded" alt="image">
+                      <img src="assets/images/dashboard/img_3.jpg" class="mw-100 w-100 rounded" alt="image">
+                    </div> -->
+                </div>
+
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+
+          <!-- Add after the Region Statistics section -->
+          <div class="row">
+              <!-- Active Alerts Section -->
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Active Alerts for <span id="alert_region"></span></h4>
+                          <div class="alert-container" id="activeAlerts">
+                              <!-- Alerts will be dynamically populated -->
+        </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Risk Zones and Map Section -->
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Risk Zones and Infrastructure</h4>
+                          <div class="row">
+                              <div class="col-md-8">
+                                  <div id="detailedMap" style="height: 400px;"></div>
+                              </div>
+                              <div class="col-md-4">
+                                  <div class="map-controls">
+                                      <h5>Map Layers</h5>
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" id="floodZones" checked>
+                                          <label class="form-check-label" for="floodZones">Flood Prone Areas</label>
+                                      </div>
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" id="evacuationRoutes" checked>
+                                          <label class="form-check-label" for="evacuationRoutes">Evacuation Routes</label>
+                                      </div>
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" id="emergencyFacilities" checked>
+                                          <label class="form-check-label" for="emergencyFacilities">Emergency Facilities</label>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Emergency Contacts Section -->
+              <div class="col-md-6 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Emergency Contacts</h4>
+                          <div class="contacts-list" id="emergencyContacts">
+                              <!-- Contacts will be dynamically populated -->
+          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Community Reports Section -->
+              <div class="col-md-6 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Community Reports</h4>
+                          <div class="reports-feed" id="communityReports">
+                              <!-- Reports will be dynamically populated -->
+                          </div>
+                          <button class="btn btn-gradient-primary mt-3" onclick="showReportModal()">Report Incident</button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Historical Incidents Section -->
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Historical Incidents</h4>
+                          <div class="timeline" id="incidentHistory">
+                              <!-- Timeline will be dynamically populated -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Local News Section -->
+              <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                      <div class="card-body">
+                          <h4 class="card-title">Local News & Updates</h4>
+                          <div class="news-feed" id="localNews">
+                              <!-- News items will be dynamically populated -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-start">
+                <span class="text-muted">© 2024 K-DAH Disaster Response System. All rights reserved.</span>
+              </div>
+              <div class="col-md-6 text-center text-md-end">
+                <span class="text-muted">Developed with ❤️ for Malaysia</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
+
+  <script src="../map/data.js"></script>
+
+  <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="assets/vendors/chart.js/Chart.min.js"></script>
+  <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="assets/js/off-canvas.js"></script>
+  <script src="assets/js/hoverable-collapse.js"></script>
+  <script src="assets/js/misc.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page -->
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/todolist.js"></script>
+  <!-- End custom js for this page -->
+
+
+
+
+  <!-- Foot -->
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+  <!-- API key -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript" src="../map/static/js/config.js"></script>
+
+  <!-- JavaScript -->
+  <script type="text/javascript" src="../map/static/js/challenge_logic.js"></script>
+
+  <!-- Add this CSS for the highlight animation -->
+  <style>
+    .highlight-card {
+        transition: all 0.5s ease;
+    }
+    
+    .highlight-card:hover {
+        box-shadow: 0 0 20px rgba(0, 100, 0, 0.3);
+        transform: translateY(-5px);
+    }
+  </style>
+
+  <!-- Add new styles -->
+  <style>
+    .alert-container {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .alert-item {
+        padding: 1rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .alert-item.warning {
+        background-color: rgba(255, 193, 7, 0.1);
+        border-left: 4px solid #ffc107;
+    }
+
+    .alert-item.danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
+    }
+
+    .alert-item.info {
+        background-color: rgba(23, 162, 184, 0.1);
+        border-left: 4px solid #17a2b8;
+    }
+
+    .contacts-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .contact-item {
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .reports-feed {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .report-item {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .timeline {
+        position: relative;
+        padding: 1rem 0;
+    }
+
+    .timeline-item {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #006400;
+        background-color: #f8f9fa;
+    }
+
+    .news-feed {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .news-item {
+        padding: 1rem;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+    }
+
+    .map-controls {
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .map-controls {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .form-check-inline {
+        margin-right: 1.5rem;
+    }
+
+    .marker-icon {
+        background-color: white;
+        border-radius: 50%;
+        padding: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+      background-color: var(--card-bg);
+      padding: 1.5rem 0;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .footer .text-muted {
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+  </style>
+
+  <!-- Add new JavaScript -->
+  <script>
+    // Initialize detailed map
+    const detailedMap = L.map('detailedMap').setView([3.0449, 101.4455], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(detailedMap);
+
+    // Area data for all 15 areas
+    const areaData = {
+        "Klang Central": {
+            coords: [[3.0333, 101.4344], [3.0533, 101.4544], [3.0333, 101.4744], [3.0133, 101.4544]],
+            riskLevel: "medium",
+            challenges: "6/9",
+            alerts: [
+                { type: "flood", message: "High tide warning in effect", time: "2 hours ago" },
+                { type: "storm", message: "Heavy rainfall expected", time: "4 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Klang Central Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4444],
+                    address: "Jalan Tengku Kelana, Klang",
+                    services: "Emergency Response, Crime Prevention",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Hospital Tengku Ampuan Rahimah", 
+                    number: "03-3372 3333", 
+                    coordinates: [3.0448, 101.4448],
+                    address: "Jalan Langat, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Klang Central Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4444],
+                    capacity: "200 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Main Evacuation Route", 
+                    path: [[3.0333, 101.4444], [3.0448, 101.4448]],
+                    description: "Primary route to emergency shelters",
+                    distance: "2.5km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Jalan Tengku Kelana", 
+                    coords: [[3.0333, 101.4344], [3.0333, 101.4444]],
+                    riskLevel: "High",
+                    lastFlood: "2023-12-15",
+                    mitigation: "Drainage system upgrade in progress"
+                }
+            ]
+        },
+        "Port Klang": {
+            coords: [[3.0008, 101.3848], [3.0208, 101.4048], [3.0108, 101.4248], [2.9908, 101.4048]],
+            riskLevel: "high",
+            challenges: "7/9",
+            alerts: [
+                { type: "flood", message: "Storm surge warning", time: "1 hour ago" },
+                { type: "storm", message: "Severe weather alert", time: "3 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Port Klang Police Station", 
+                    number: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    address: "Jalan Pelabuhan, Port Klang",
+                    services: "Maritime Security, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Port Klang Health Clinic", 
+                    number: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    address: "Jalan Pelabuhan, Port Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Port Klang Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    capacity: "150 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Coastal Evacuation Route", 
+                    path: [[3.0008, 101.4048], [3.0108, 101.4148]],
+                    description: "Primary route to inland shelters",
+                    distance: "3.0km",
+                    estimatedTime: "20 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Port Area", 
+                    coords: [[3.0008, 101.3848], [3.0108, 101.4048]],
+                    riskLevel: "High",
+                    lastFlood: "2023-12-10",
+                    mitigation: "Storm surge barriers in place"
+                }
+            ]
+        },
+        "Kapar": {
+            coords: [[3.1109, 101.3592], [3.1409, 101.3792], [3.1309, 101.3992], [3.1009, 101.3792]],
+            riskLevel: "high",
+            challenges: "5/9",
+            alerts: [
+                { type: "industrial", message: "Chemical spill alert", time: "5 hours ago" },
+                { type: "flood", message: "River overflow warning", time: "2 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Kapar Police Station", 
+                    number: "03-3250 1333", 
+                    coordinates: [3.1209, 101.3692],
+                    address: "Jalan Kapar, Klang",
+                    services: "Industrial Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Kapar Health Clinic", 
+                    number: "03-3250 1333", 
+                    coordinates: [3.1209, 101.3692],
+                    address: "Jalan Kapar, Klang",
+                    services: "Emergency Care, Industrial Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Kapar Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3250 1333", 
+                    coordinates: [3.1209, 101.3692],
+                    capacity: "100 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Industrial Evacuation Route", 
+                    path: [[3.1209, 101.3692], [3.1309, 101.3792]],
+                    description: "Route to safe zones",
+                    distance: "2.0km",
+                    estimatedTime: "10 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Industrial Zone", 
+                    coords: [[3.1109, 101.3592], [3.1209, 101.3692]],
+                    riskLevel: "High",
+                    lastFlood: "2023-12-05",
+                    mitigation: "Chemical containment measures in place"
+                }
+            ]
+        },
+        "Taman Berkeley": {
+            coords: [[3.0486, 101.4483], [3.0686, 101.4683], [3.0486, 101.4883], [3.0286, 101.4683]],
+            riskLevel: "medium",
+            challenges: "4/9",
+            alerts: [
+                { type: "flood", message: "Flash flood warning", time: "3 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Taman Berkeley Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0486, 101.4583],
+                    address: "Jalan Berkeley, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Taman Berkeley Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0486, 101.4583],
+                    address: "Jalan Berkeley, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Taman Berkeley Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0486, 101.4583],
+                    capacity: "150 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Residential Evacuation Route", 
+                    path: [[3.0486, 101.4583], [3.0586, 101.4683]],
+                    description: "Route to community shelters",
+                    distance: "1.5km",
+                    estimatedTime: "10 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Residential Area", 
+                    coords: [[3.0486, 101.4483], [3.0586, 101.4583]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-12-01",
+                    mitigation: "Drainage system maintenance ongoing"
+                }
+            ]
+        },
+        "Bukit Raja": {
+            coords: [[3.0674, 101.4626], [3.0874, 101.4826], [3.0674, 101.5026], [3.0474, 101.4826]],
+            riskLevel: "low",
+            challenges: "3/9",
+            alerts: [
+                { type: "landslide", message: "Landslide risk warning", time: "6 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bukit Raja Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    address: "Jalan Bukit Raja, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bukit Raja Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    address: "Jalan Bukit Raja, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bukit Raja Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    capacity: "100 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Hill Evacuation Route", 
+                    path: [[3.0674, 101.4726], [3.0774, 101.4826]],
+                    description: "Route to safe zones",
+                    distance: "2.0km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Hill Area", 
+                    coords: [[3.0674, 101.4626], [3.0774, 101.4726]],
+                    riskLevel: "Low",
+                    lastFlood: "2023-11-25",
+                    mitigation: "Landslide prevention measures in place"
+                }
+            ]
+        },
+        "Telok Gadong": {
+            coords: [[3.0115, 101.4536], [3.0315, 101.4736], [3.0115, 101.4936], [2.9915, 101.4736]],
+            riskLevel: "medium",
+            challenges: "5/9",
+            alerts: [
+                { type: "flood", message: "River overflow warning", time: "4 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Telok Gadong Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Telok Gadong, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Telok Gadong Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Telok Gadong, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Telok Gadong Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    capacity: "120 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "River Evacuation Route", 
+                    path: [[3.0115, 101.4636], [3.0215, 101.4736]],
+                    description: "Route to safe zones",
+                    distance: "1.8km",
+                    estimatedTime: "12 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "River Area", 
+                    coords: [[3.0115, 101.4536], [3.0215, 101.4636]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-11-20",
+                    mitigation: "River bank reinforcement in progress"
+                }
+            ]
+        },
+        "Bandar Klang": {
+            coords: [[3.0333, 101.4444], [3.0533, 101.4644], [3.0333, 101.4844], [3.0133, 101.4644]],
+            riskLevel: "medium",
+            challenges: "6/9",
+            alerts: [
+                { type: "flood", message: "Urban flooding warning", time: "2 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bandar Klang Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Bandar, Klang",
+                    services: "Urban Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bandar Klang Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Bandar, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bandar Klang Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    capacity: "200 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Urban Evacuation Route", 
+                    path: [[3.0333, 101.4544], [3.0433, 101.4644]],
+                    description: "Route to safe zones",
+                    distance: "2.5km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Urban Center", 
+                    coords: [[3.0333, 101.4444], [3.0433, 101.4544]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-11-15",
+                    mitigation: "Urban drainage system upgrade in progress"
+                }
+            ]
+        },
+        "Pandamaran": {
+            coords: [[3.0115, 101.4536], [3.0315, 101.4736], [3.0115, 101.4936], [2.9915, 101.4736]],
+            riskLevel: "medium",
+            challenges: "4/9",
+            alerts: [
+                { type: "flood", message: "River overflow warning", time: "4 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Pandamaran Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Pandamaran, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Pandamaran Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Pandamaran, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Pandamaran Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    capacity: "150 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "River Evacuation Route", 
+                    path: [[3.0115, 101.4636], [3.0215, 101.4736]],
+                    description: "Route to safe zones",
+                    distance: "2.0km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "River Area", 
+                    coords: [[3.0115, 101.4536], [3.0215, 101.4636]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-11-10",
+                    mitigation: "River bank maintenance ongoing"
+                }
+            ]
+        },
+        "Klang Utara": {
+            coords: [[3.0333, 101.4444], [3.0533, 101.4644], [3.0333, 101.4844], [3.0133, 101.4644]],
+            riskLevel: "medium",
+            challenges: "5/9",
+            alerts: [
+                { type: "flood", message: "Urban flooding warning", time: "2 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Klang Utara Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Utara, Klang",
+                    services: "Urban Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Klang Utara Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Utara, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Klang Utara Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    capacity: "180 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Urban Evacuation Route", 
+                    path: [[3.0333, 101.4544], [3.0433, 101.4644]],
+                    description: "Route to safe zones",
+                    distance: "2.2km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Urban Center", 
+                    coords: [[3.0333, 101.4444], [3.0433, 101.4544]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-11-05",
+                    mitigation: "Urban drainage system maintenance"
+                }
+            ]
+        },
+        "Klang Selatan": {
+            coords: [[3.0333, 101.4444], [3.0533, 101.4644], [3.0333, 101.4844], [3.0133, 101.4644]],
+            riskLevel: "medium",
+            challenges: "4/9",
+            alerts: [
+                { type: "flood", message: "Urban flooding warning", time: "2 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Klang Selatan Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Selatan, Klang",
+                    services: "Urban Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Klang Selatan Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Selatan, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Klang Selatan Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    capacity: "160 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Urban Evacuation Route", 
+                    path: [[3.0333, 101.4544], [3.0433, 101.4644]],
+                    description: "Route to safe zones",
+                    distance: "2.0km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Urban Center", 
+                    coords: [[3.0333, 101.4444], [3.0433, 101.4544]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-10-30",
+                    mitigation: "Urban drainage system upgrade"
+                }
+            ]
+        },
+        "Bandar Puteri": {
+            coords: [[3.0008, 101.3848], [3.0208, 101.4048], [3.0108, 101.4248], [2.9908, 101.4048]],
+            riskLevel: "high",
+            challenges: "7/9",
+            alerts: [
+                { type: "flood", message: "Storm surge warning", time: "1 hour ago" },
+                { type: "storm", message: "Severe weather alert", time: "3 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bandar Puteri Police Station", 
+                    number: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    address: "Jalan Bandar Puteri, Port Klang",
+                    services: "Maritime Security, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bandar Puteri Health Clinic", 
+                    number: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    address: "Jalan Bandar Puteri, Port Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bandar Puteri Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3168 6159", 
+                    coordinates: [3.0008, 101.4048],
+                    capacity: "200 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Port Evacuation Route", 
+                    path: [[3.0008, 101.4048], [3.0108, 101.4148]],
+                    description: "Route to safe zones",
+                    distance: "3.0km",
+                    estimatedTime: "20 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Port Area", 
+                    coords: [[3.0008, 101.3848], [3.0108, 101.4048]],
+                    riskLevel: "High",
+                    lastFlood: "2023-10-25",
+                    mitigation: "Storm surge barriers in place"
+                }
+            ]
+        },
+        "Bandar Botanic": {
+            coords: [[3.0115, 101.4536], [3.0315, 101.4736], [3.0115, 101.4936], [2.9915, 101.4736]],
+            riskLevel: "low",
+            challenges: "3/9",
+            alerts: [
+                { type: "flood", message: "Minor flooding warning", time: "5 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bandar Botanic Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Botanic, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bandar Botanic Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    address: "Jalan Botanic, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bandar Botanic Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0115, 101.4636],
+                    capacity: "120 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Botanic Evacuation Route", 
+                    path: [[3.0115, 101.4636], [3.0215, 101.4736]],
+                    description: "Route to safe zones",
+                    distance: "1.5km",
+                    estimatedTime: "10 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Botanic Area", 
+                    coords: [[3.0115, 101.4536], [3.0215, 101.4636]],
+                    riskLevel: "Low",
+                    lastFlood: "2023-10-20",
+                    mitigation: "Drainage system maintenance"
+                }
+            ]
+        },
+        "Bandar Sentosa": {
+            coords: [[3.0333, 101.4444], [3.0533, 101.4644], [3.0333, 101.4844], [3.0133, 101.4644]],
+            riskLevel: "medium",
+            challenges: "5/9",
+            alerts: [
+                { type: "flood", message: "Urban flooding warning", time: "2 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bandar Sentosa Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Sentosa, Klang",
+                    services: "Urban Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bandar Sentosa Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    address: "Jalan Sentosa, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bandar Sentosa Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0333, 101.4544],
+                    capacity: "180 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Urban Evacuation Route", 
+                    path: [[3.0333, 101.4544], [3.0433, 101.4644]],
+                    description: "Route to safe zones",
+                    distance: "2.2km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Urban Center", 
+                    coords: [[3.0333, 101.4444], [3.0433, 101.4544]],
+                    riskLevel: "Medium",
+                    lastFlood: "2023-10-15",
+                    mitigation: "Urban drainage system maintenance"
+                }
+            ]
+        },
+        "Bandar Bukit Tinggi": {
+            coords: [[3.0674, 101.4626], [3.0874, 101.4826], [3.0674, 101.5026], [3.0474, 101.4826]],
+            riskLevel: "low",
+            challenges: "3/9",
+            alerts: [
+                { type: "landslide", message: "Landslide risk warning", time: "6 hours ago" }
+            ],
+            contacts: [
+                { 
+                    type: "police", 
+                    name: "Bandar Bukit Tinggi Police Station", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    address: "Jalan Bukit Tinggi, Klang",
+                    services: "Community Safety, Emergency Response",
+                    hours: "24/7"
+                },
+                { 
+                    type: "hospital", 
+                    name: "Bandar Bukit Tinggi Health Clinic", 
+                    number: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    address: "Jalan Bukit Tinggi, Klang",
+                    services: "Emergency Care, General Medicine",
+                    hours: "24/7"
+                }
+            ],
+            resources: [
+                { 
+                    type: "community", 
+                    name: "Bandar Bukit Tinggi Community Center", 
+                    description: "Emergency shelter and supplies", 
+                    contact: "03-3371 4404", 
+                    coordinates: [3.0674, 101.4726],
+                    capacity: "100 people",
+                    facilities: "Shelter, Food, Medical Aid"
+                }
+            ],
+            evacuationRoutes: [
+                { 
+                    name: "Hill Evacuation Route", 
+                    path: [[3.0674, 101.4726], [3.0774, 101.4826]],
+                    description: "Route to safe zones",
+                    distance: "2.0km",
+                    estimatedTime: "15 minutes"
+                }
+            ],
+            floodProneAreas: [
+                { 
+                    name: "Hill Area", 
+                    coords: [[3.0674, 101.4626], [3.0774, 101.4726]],
+                    riskLevel: "Low",
+                    lastFlood: "2023-10-10",
+                    mitigation: "Landslide prevention measures in place"
+                }
+            ]
+        }
+    };
+
+    // Update map when area is selected
+    document.getElementById('inputDistrict').addEventListener('change', function() {
+        const selectedArea = this.value;
+        updateMap(selectedArea);
+    });
+
+    // Dark mode functionality
+    const checkbox = document.getElementById('checkbox');
+    checkbox.addEventListener('change', function() {
+        if(this.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Check for saved theme preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+            checkbox.checked = true;
+        }
+    }
+
+    // Update the map marker popup content
+    function createPopupContent(contact) {
+        return `
+            <div class="popup-content">
+                <h5>${contact.name}</h5>
+                <p><i class="mdi mdi-phone"></i> ${contact.number}</p>
+                <p><i class="mdi mdi-map-marker"></i> ${contact.address}</p>
+                <p><i class="mdi mdi-clock"></i> ${contact.hours}</p>
+                <p><i class="mdi mdi-information"></i> ${contact.services}</p>
+            </div>
+        `;
+    }
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+        darkModeToggle.checked = true;
+    }
+
+    // Toggle dark mode
+    darkModeToggle.addEventListener('change', () => {
+        if (darkModeToggle.checked) {
+            body.classList.add('dark-theme');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            body.classList.remove('dark-theme');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Update map theme based on current theme
+    function updateMapTheme() {
+        const isDark = body.classList.contains('dark-theme');
+        const tileLayer = map.getLayers()[0];
+        
+        if (isDark) {
+            tileLayer.setUrl('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png');
+        } else {
+            tileLayer.setUrl('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        }
+    }
+
+    // Add theme change listener
+    darkModeToggle.addEventListener('change', updateMapTheme);
+  </script>
+
+</body>
+
+</html>

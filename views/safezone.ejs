@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <title>Klang Safe Zones</title>
+
+    <style>
+        #map {
+            height: 800px;
+            width: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- header section starts  -->
+<header class="header">
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">Introduction</a>
+        <a href="#c_finance">Map</a>
+        <a href="#p_finance">Natural disasters</a>
+        <a href="#g_finance">Earlier Cases</a>
+        <a href="#contact">Contact</a>
+
+        <div class="topnav-right">
+            <a href=""></a>
+            <a href=" /surveyform" target="_blank">Survey</a>
+            <a href="/safezones" target="_blank">Safezones</a>
+            <a href="/community" target="_blank">Community</a>
+        </div>
+    </nav>
+</header>
+
+<style>
+    .topnav-right {
+        float: right;
+    }
+    .navbar {
+        background-color: #333;
+        padding: 15px;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+    }
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+</style>
+
+<div id="map" style="margin-top: 60px;"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        const apiKey = 'pk.eyJ1IjoiYWxmcmVkMjAxNiIsImEiOiJja2RoMHkyd2wwdnZjMnJ0MTJwbnVmeng5In0.E4QbAFjiWLY8k3AFhDtErA';
+
+        // Center map on Klang
+        const mymap = L.map('map').setView([3.0333, 101.4444], 13);
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: apiKey
+        }).addTo(mymap);
+
+        // Klang Government Offices
+        const marker = L.marker([3.0333, 101.4444]).addTo(mymap);
+        let template = `
+            <h3>Majlis Perbandaran Klang (MPK)</h3>
+            <h3>Phone number: 03-3371 4404</h3>
+            <h3>Emergency Hotline: 1-800-88-23826</h3>
+        `
+        marker.bindPopup(template);
+
+        // Klang General Hospital
+        const marker1 = L.marker([3.0448, 101.4448]).addTo(mymap);
+        let template1 = `
+            <h3>Hospital Tengku Ampuan Rahimah</h3>
+            <h3>Phone number: 03-3372 3333</h3>
+            <h3>Emergency Department Available 24/7</h3>
+        `
+        marker1.bindPopup(template1);
+
+        // Port Klang Health Clinic
+        const marker2 = L.marker([3.0008, 101.4048]).addTo(mymap);
+        let template2 = `
+            <h3>Klinik Kesihatan Port Klang</h3>
+            <h3>Phone number: 03-3168 6159</h3>
+            <h3>Operating Hours: 8am-5pm</h3>
+        `
+        marker2.bindPopup(template2);
+
+        // Kapar Health Clinic
+        const marker3 = L.marker([3.1209, 101.3692]).addTo(mymap);
+        let template3 = `
+            <h3>Klinik Kesihatan Kapar</h3>
+            <h3>Phone number: 03-3250 1333</h3>
+            <h3>Operating Hours: 8am-5pm</h3>
+        `
+        marker3.bindPopup(template3);
+
+        // Fire and Rescue Station
+        const marker4 = L.marker([3.0486, 101.4583]).addTo(mymap);
+        let template4 = `
+            <h3>Balai Bomba dan Penyelamat Klang</h3>
+            <h3>Emergency number: 999</h3>
+            <h3>24/7 Emergency Response</h3>
+        `
+        marker4.bindPopup(template4);
+
+        // Safe Zones (Circles)
+
+        // Klang Central Safe Zone
+        const circle = L.circle([3.0333, 101.4444], {
+            radius: 700,
+            color: '#006400',
+            fillColor: '#32cd32',
+            fillOpacity: 0.2
+        }).addTo(mymap).bindPopup(`
+            <ul>
+                <li>Name: Klang Central Safe Zone</li>
+                <li>Description: Main evacuation center at Stadium Sultan Suleiman</li>
+                <li>Contact: 03-3371 4404</li>
+                <li>Hours: 24/7 during emergencies</li>
+                <li>Address: Jalan Stadium, 41000 Klang</li>
+                <li>Facilities: Emergency supplies, medical support, sleeping areas</li>
+                <li>Safety tips: Follow MPK emergency protocols</li>
+            </ul>
+        `);
+
+        // Port Klang Safe Zone
+        const circle1 = L.circle([3.0008, 101.4048], {
+            radius: 650,
+            color: '#006400',
+            fillColor: '#32cd32',
+            fillOpacity: 0.2
+        }).addTo(mymap).bindPopup(`
+            <ul>
+                <li>Name: Port Klang Safe Zone</li>
+                <li>Description: Port area evacuation center</li>
+                <li>Contact: 03-3168 6159</li>
+                <li>Hours: 24/7 during emergencies</li>
+                <li>Address: Port Klang, 42000</li>
+                <li>Facilities: Emergency shelter, first aid, food distribution</li>
+                <li>Safety tips: Monitor flood warnings</li>
+            </ul>
+        `);
+
+        // Kapar Safe Zone
+        const circle2 = L.circle([3.1209, 101.3692], {
+            radius: 600,
+            color: '#006400',
+            fillColor: '#32cd32',
+            fillOpacity: 0.2
+        }).addTo(mymap).bindPopup(`
+            <ul>
+                <li>Name: Kapar Safe Zone</li>
+                <li>Description: Community evacuation center</li>
+                <li>Contact: 03-3250 1333</li>
+                <li>Hours: 24/7 during emergencies</li>
+                <li>Address: Kapar, 42200</li>
+                <li>Facilities: Emergency shelter, medical support</li>
+                <li>Safety tips: Follow evacuation instructions</li>
+            </ul>
+        `);
+
+        // Taman Berkeley Safe Zone
+        const circle3 = L.circle([3.0486, 101.4583], {
+            radius: 550,
+            color: '#006400',
+            fillColor: '#32cd32',
+            fillOpacity: 0.2
+        }).addTo(mymap).bindPopup(`
+            <ul>
+                <li>Name: Taman Berkeley Safe Zone</li>
+                <li>Description: Neighborhood evacuation point</li>
+                <li>Contact: 03-3371 4404</li>
+                <li>Hours: 24/7 during emergencies</li>
+                <li>Address: Taman Berkeley, 41150 Klang</li>
+                <li>Facilities: Emergency supplies, temporary shelter</li>
+                <li>Safety tips: Stay tuned to local announcements</li>
+            </ul>
+        `);
+
+    </script>
+</body>
+
+</html>

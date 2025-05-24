@@ -1,0 +1,133 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4444, 3.0333]
+      },
+      "properties": {
+        "OBJECTID": 1,
+        "Shape": "(101.4444, 3.0333)",
+        "source_name": "Selangor Disaster Management",
+        "source_link": "",
+        "event_id": 1,
+        "event_date": "2023-12-15",
+        "event_time": "14:30",
+        "event_title": "Klang Central Landslide",
+        "event_description": "Landslide affecting residential area following heavy monsoon rainfall",
+        "location_description": "Klang Central, Selangor, Malaysia",
+        "location_accuracy": "1km",
+        "landslide_category": "landslide",
+        "landslide_trigger": "monsoon_rain",
+        "landslide_size": "medium",
+        "landslide_setting": "residential",
+        "fatality_count": 0,
+        "injury_count": 2,
+        "storm_name": "Northeast Monsoon",
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "admin_division_name": "Selangor",
+        "gazetteer_closest_point": "Klang",
+        "gazetteer_distance": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4048, 3.0008]
+      },
+      "properties": {
+        "OBJECTID": 2,
+        "Shape": "(101.4048, 3.0008)",
+        "source_name": "Port Klang Authority",
+        "source_link": "",
+        "event_id": 2,
+        "event_date": "2023-12-16",
+        "event_time": "08:45",
+        "event_title": "Port Klang Slope Failure",
+        "event_description": "Slope failure near port facilities after continuous rainfall",
+        "location_description": "Port Klang, Selangor, Malaysia",
+        "location_accuracy": "1km",
+        "landslide_category": "slope_failure",
+        "landslide_trigger": "continuous_rain",
+        "landslide_size": "small",
+        "landslide_setting": "industrial",
+        "fatality_count": 0,
+        "injury_count": 1,
+        "storm_name": "",
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "admin_division_name": "Selangor",
+        "gazetteer_closest_point": "Port Klang",
+        "gazetteer_distance": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.3692, 3.1209]
+      },
+      "properties": {
+        "OBJECTID": 3,
+        "Shape": "(101.3692, 3.1209)",
+        "source_name": "Kapar District Office",
+        "source_link": "",
+        "event_id": 3,
+        "event_date": "2023-12-17",
+        "event_time": "16:20",
+        "event_title": "Kapar Mudslide",
+        "event_description": "Mudslide affecting road infrastructure in Kapar area",
+        "location_description": "Kapar, Klang, Selangor, Malaysia",
+        "location_accuracy": "1km",
+        "landslide_category": "mudslide",
+        "landslide_trigger": "heavy_rain",
+        "landslide_size": "small",
+        "landslide_setting": "road",
+        "fatality_count": 0,
+        "injury_count": 0,
+        "storm_name": "",
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "admin_division_name": "Selangor",
+        "gazetteer_closest_point": "Kapar",
+        "gazetteer_distance": 0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [101.4583, 3.0486]
+      },
+      "properties": {
+        "OBJECTID": 4,
+        "Shape": "(101.4583, 3.0486)",
+        "source_name": "Local Authority",
+        "source_link": "",
+        "event_id": 4,
+        "event_date": "2023-12-18",
+        "event_time": "11:15",
+        "event_title": "Taman Sri Andalas Landslide",
+        "event_description": "Minor landslide near residential area due to soil erosion",
+        "location_description": "Taman Sri Andalas, Klang, Selangor, Malaysia",
+        "location_accuracy": "1km",
+        "landslide_category": "landslide",
+        "landslide_trigger": "soil_erosion",
+        "landslide_size": "small",
+        "landslide_setting": "residential",
+        "fatality_count": 0,
+        "injury_count": 0,
+        "storm_name": "",
+        "country_name": "Malaysia",
+        "country_code": "MY",
+        "admin_division_name": "Selangor",
+        "gazetteer_closest_point": "Klang",
+        "gazetteer_distance": 2.5
+      }
+    }
+  ]
+}

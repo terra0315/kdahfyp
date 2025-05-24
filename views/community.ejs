@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-DAH Community Forum</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet for Maps -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    
+    <style>
+        :root {
+            --primary: #006400;
+            --primary-light: #008000;
+            --secondary: #1a1a1a;
+            --secondary-light: #2d2d2d;
+            --alert: #ff3b30;
+            --warning: #ffcc00;
+            --info: #0088cc;
+            --success: #34c759;
+            --text: #ffffff;
+            --text-muted: #9ca3af;
+            --gradient-primary: linear-gradient(135deg, #006400, #008000);
+            --gradient-alert: linear-gradient(135deg, #ff3b30, #ff6b6b);
+            --gradient-success: linear-gradient(135deg, #34c759, #4cd964);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--secondary);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 4rem;
+        }
+
+        .alert-banner {
+            background: var(--gradient-alert);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .close-alert {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            margin-left: 1rem;
+        }
+
+        .language-option {
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .language-option.active {
+            background: var(--primary);
+        }
+
+        .nav-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.25rem;
+            text-decoration: none;
+            padding: 0.25rem 0.75rem;
+            background: white;
+            border-radius: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.primary {
+            background: var(--primary);
+        }
+
+        .nav-link.primary:hover {
+            background: var(--primary-light);
+        }
+
+        .emergency-button {
+            background: var(--alert);
+            color: white;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .container {
+            max-width: 80rem;
+            margin: 5rem auto 0;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 5rem;
+            height: calc(100vh - 5rem);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .sidebar-section h3 {
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-list a:hover {
+            background: var(--gradient-primary);
+            transform: translateX(0.5rem);
+        }
+
+        .category-list i {
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-dot.online {
+            background-color: var(--success);
+        }
+
+        .status-dot.alert {
+            background-color: var(--alert);
+        }
+
+        .status-dot.warning {
+            background-color: var(--warning);
+        }
+
+        .im-safe-button {
+            background: var(--success);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+
+        .im-safe-button:hover {
+            transform: scale(1.05);
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text);
+        }
+
+        .search-select {
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text);
+        }
+
+        .search-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-button:hover {
+            background: var(--primary-light);
+        }
+
+        .emergency-alert {
+            background: rgba(255, 59, 48, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--alert);
+        }
+
+        .emergency-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--alert);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        #map {
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .resources-section {
+            background: rgba(0, 100, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .resource-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 100, 0, 0.3);
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .featured-section {
+            background: rgba(0, 100, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .featured-grid {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .featured-card {
+            flex: 0 0 20rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .featured-card:hover {
+            transform: scale(1.05);
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 12rem;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            padding: 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag.primary {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .tag.alert {
+            background: var(--alert);
+            color: var(--text);
+        }
+
+        .tag.warning {
+            background: var(--warning);
+            color: black;
+        }
+
+        .tag.info {
+            background: var(--info);
+            color: var(--text);
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--success);
+            font-size: 0.875rem;
+        }
+
+        .post-card {
+            background: var(--secondary-light);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .post-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 100, 0, 0.2);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .post-content img {
+            max-width: 100%;
+            border-radius: 0.5rem;
+            transition: transform 0.3s;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content img:hover {
+            transform: scale(1.05);
+        }
+
+        .post-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .post-images img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .post-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-2px);
+        }
+
+        .action-button.liked {
+            color: var(--alert);
+        }
+
+        .action-button.commented {
+            color: var(--info);
+        }
+
+        .action-button.shared {
+            color: var(--success);
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volunteer-section {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .volunteer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .volunteer-list {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .volunteer-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+        }
+
+        .volunteer-avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        .volunteer-name {
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .volunteers-needed {
+            background: rgba(255, 204, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .volunteers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .skill-tag {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .gotong-royong-section {
+            background: rgba(0, 100, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 9999px;
+            margin: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 9999px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: var(--primary);
+        }
+
+        .tab:hover {
+            background: rgba(0, 100, 0, 0.3);
+        }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 40;
+        }
+
+        .floating-button {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: var(--primary);
+            color: var(--text);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-button:hover {
+            background: var(--primary-light);
+            transform: scale(1.1);
+        }
+
+        .floating-button.emergency {
+            background: var(--alert);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            max-width: 32rem;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text);
+        }
+
+        .modal-map {
+            height: 200px;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .button.primary {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .button.primary:hover {
+            background: var(--primary-light);
+        }
+
+        .button.alert {
+            background: var(--alert);
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .fundraiser-section {
+            background: var(--gradient-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .fundraiser-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .fundraiser-progress {
+            height: 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .fundraiser-progress-bar {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 1rem;
+            transition: width 0.3s ease;
+        }
+
+        .fundraiser-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .fundraiser-stat {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+        }
+
+        .fundraiser-stat h4 {
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                margin-bottom: 1rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                padding: 0.5rem;
+                height: auto;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .resource-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .fundraiser-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Alert Banner -->
+    <div class="alert-banner" id="alertBanner">
+        <div>EMERGENCY ALERT: Flood warning in effect for Port Klang and surrounding areas. Stay vigilant!</div>
+        <button class="close-alert" onclick="document.getElementById('alertBanner').style.display='none'">×</button>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="brand-logo">K-DAH</a>
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Forums</a>
+                <a href="#" class="nav-link">Resources</a>
+                <a href="#" class="nav-link">Directory</a>
+                <a href="#" class="nav-link primary">Login / Register</a>
+                <a href="#" class="nav-link emergency-button">Emergency</a>
+                <div class="language-switcher">
+                    <div class="language-option active">EN</div>
+                    <div class="language-option">BM</div>
+                    <div class="language-option">中文</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-exclamation-circle"></i> Community Status</h3>
+                <div class="status-indicator">
+                    <div class="status-dot warning"></div>
+                    <span>Flood Warning: Port Klang</span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot online"></div>
+                    <span>Weather: Rainy</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-comments"></i> Forums</h3>
+                <ul class="category-list">
+                    <li><a href="#"><i class="fas fa-water"></i> Floods</a></li>
+                    <li><a href="#"><i class="fas fa-mountain"></i> Landslides</a></li>
+                    <li><a href="#"><i class="fas fa-bolt"></i> Power Outages</a></li>
+                    <li><a href="#"><i class="fas fa-hand-holding-heart"></i> Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-map-marker-alt"></i> Klang Areas</h3>
+                <ul class="category-list">
+                    <li><a href="#"><i class="fas fa-city"></i> Klang Central</a></li>
+                    <li><a href="#"><i class="fas fa-ship"></i> Port Klang</a></li>
+                    <li><a href="#"><i class="fas fa-home"></i> Taman Berkeley</a></li>
+                    <li><a href="#"><i class="fas fa-building"></i> Bandar Bukit Tinggi</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-link"></i> Quick Links</h3>
+                <ul class="category-list">
+                    <li><a href="#"><i class="fas fa-exclamation-circle"></i> Active Emergencies</a></li>
+                    <li><a href="#"><i class="fas fa-map"></i> Risk Map</a></li>
+                    <li><a href="#"><i class="fas fa-clipboard-check"></i> Safety Checklist</a></li>
+                </ul>
+            </div>
+            
+            <button class="im-safe-button">
+                <i class="fas fa-check-circle"></i> I'm Safe - Check In
+            </button>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <form class="search-form" id="searchForm">
+                    <input type="text" class="search-input" placeholder="Search forums..." id="searchInput">
+                    <select class="search-select" id="categorySelect">
+                        <option value="all">All Categories</option>
+                        <option value="floods">Floods</option>
+                        <option value="landslides">Landslides</option>
+                        <option value="power">Power Outages</option>
+                        <option value="support">Support Requests</option>
+                    </select>
+                    <select class="search-select" id="areaSelect">
+                        <option value="all">All Areas</option>
+                        <option value="central">Klang Central</option>
+                        <option value="port">Port Klang</option>
+                        <option value="berkeley">Taman Berkeley</option>
+                    </select>
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Emergency Alert Section -->
+            <div class="emergency-alert" id="emergencyAlert">
+                <div class="emergency-header">
+                    <div class="emergency-title">
+                        <i class="fas fa-exclamation-triangle"></i> Flood Warning: Port Klang
+                    </div>
+                    <span>Updated: <span id="alertTime">24 Apr 2025, 09:15 AM</span></span>
+                </div>
+                <p id="alertMessage">Heavy rainfall expected to continue for the next 12 hours. Water levels rising in Port Klang and surrounding low-lying areas. Residents are advised to prepare for possible evacuation and stay tuned for further updates.</p>
+                <div class="post-actions">
+                    <button class="action-button" id="shareAlert">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="action-button" id="subscribeAlert">
+                        <i class="fas fa-bell"></i> Subscribe
+                    </button>
+                    <button class="action-button" id="reportIssue">
+                        <i class="fas fa-exclamation-circle"></i> Report Issue
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Map Section -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-controls">
+                    <button class="map-control-button" id="zoomIn"><i class="fas fa-plus"></i></button>
+                    <button class="map-control-button" id="zoomOut"><i class="fas fa-minus"></i></button>
+                    <button class="map-control-button" id="centerMap"><i class="fas fa-crosshairs"></i></button>
+                </div>
+            </div>
+            
+            <!-- Emergency Resources Section -->
+            <div class="resources-section">
+                <h2><i class="fas fa-first-aid"></i> Emergency Resources</h2>
+                <div class="resource-grid">
+                    <div class="resource-card" data-type="shelter">
+                        <i class="fas fa-home resource-icon"></i>
+                        <h3>Evacuation Centers</h3>
+                        <p>Find the nearest shelter</p>
+                        <button class="resource-button">View Locations</button>
+                    </div>
+                    <div class="resource-card" data-type="food">
+                        <i class="fas fa-utensils resource-icon"></i>
+                        <h3>Food Distribution</h3>
+                        <p>Locations and schedules</p>
+                        <button class="resource-button">View Schedule</button>
+                    </div>
+                    <div class="resource-card" data-type="medical">
+                        <i class="fas fa-medkit resource-icon"></i>
+                        <h3>Medical Help</h3>
+                        <p>Emergency medical services</p>
+                        <button class="resource-button">Find Help</button>
+                    </div>
+                    <div class="resource-card" data-type="water">
+                        <i class="fas fa-tint resource-icon"></i>
+                        <h3>Clean Water</h3>
+                        <p>Water distribution points</p>
+                        <button class="resource-button">View Points</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fundraiser Section -->
+            <div class="fundraiser-section">
+                <div class="fundraiser-header">
+                    <h2><i class="fas fa-hand-holding-heart"></i> Community Relief Fund</h2>
+                    <button class="button primary" id="donateButton">Donate Now</button>
+                </div>
+                <p>Help support our community members affected by recent floods. Your contribution will provide essential supplies and support for recovery efforts.</p>
+                <div class="fundraiser-progress">
+                    <div class="fundraiser-progress-bar" style="width: 65%"></div>
+                </div>
+                <div class="fundraiser-stats">
+                    <div class="fundraiser-stat">
+                        <h4>Raised</h4>
+                        <p>RM 65,000</p>
+                    </div>
+                    <div class="fundraiser-stat">
+                        <h4>Goal</h4>
+                        <p>RM 100,000</p>
+                    </div>
+                    <div class="fundraiser-stat">
+                        <h4>Donors</h4>
+                        <p>128</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volunteer Section -->
+            <div class="volunteer-section">
+                <div class="volunteer-header">
+                    <h2><i class="fas fa-hands-helping"></i> Active Volunteers</h2>
+                    <a href="#" class="nav-link" id="viewAllVolunteers">View All</a>
+                </div>
+                <div class="volunteer-list" id="volunteerList">
+                    <!-- Volunteers will be loaded dynamically -->
+                </div>
+                
+                <div class="volunteers-needed">
+                    <div class="volunteers-header">
+                        <h3><i class="fas fa-user-plus"></i> Volunteers Needed</h3>
+                        <button class="button primary" id="signUpButton">Sign Up</button>
+                    </div>
+                    <p id="volunteerNeeds">Port Klang Relief Center needs 15 more volunteers for tomorrow's shift (25 Apr, 10 AM - 4 PM)</p>
+                    <div class="skills-list">
+                        <div class="skill-tag">Food Distribution</div>
+                        <div class="skill-tag">Medical Aid</div>
+                        <div class="skill-tag">Elderly Assistance</div>
+                        <div class="skill-tag">Transportation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forum Posts -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="user-info">
+                        <img src="/api/placeholder/100/100" alt="User Avatar" class="avatar">
+                        <div>
+                            <h3>Ahmad Ibrahim <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Resident</span></h3>
+                            <span>Port Klang • 45 minutes ago</span>
+                        </div>
+                    </div>
+                    <span class="tag primary">Situation Report</span>
+                </div>
+                <div class="post-content">
+                    <p>Water level at Jalan Pelabuhan has risen approximately 30cm in the last 2 hours. Local drains are overflowing. My neighbors and I have moved vehicles to higher ground and are monitoring the situation.</p>
+                    <div class="post-images">
+                        <img src="/api/placeholder/400/320" alt="Flood situation">
+                        <img src="/api/placeholder/400/320" alt="Water level">
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <button class="action-button like-button" data-post-id="1">
+                        <i class="fas fa-thumbs-up"></i> Helpful (23)
+                    </button>
+                    <button class="action-button comment-button" data-post-id="1">
+                        <i class="fas fa-comment"></i> Comment (8)
+                    </button>
+                    <button class="action-button share-button" data-post-id="1">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <button class="floating-button emergency" id="emergencyButton">
+            <i class="fas fa-exclamation"></i>
+        </button>
+        <button class="floating-button" id="newPostButton">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="emergencyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Report Emergency</h2>
+                <button class="modal-close" id="closeEmergencyModal">&times;</button>
+            </div>
+            <form id="emergencyForm">
+                <div class="form-group">
+                    <label for="emergencyType">Emergency Type</label>
+                    <select class="modal-input" id="emergencyType" required>
+                        <option value="flood">Flooding</option>
+                        <option value="landslide">Landslide</option>
+                        <option value="fire">Fire</option>
+                        <option value="power">Power Outage</option>
+                        <option value="medical">Medical Emergency</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="emergencyLocation">Location</label>
+                    <input type="text" class="modal-input" id="emergencyLocation" placeholder="Enter specific location" required>
+                </div>
+                <div class="form-group">
+                    <label>Mark on Map</label>
+                    <div class="modal-map" id="emergencyMap"></div>
+                </div>
+                <div class="form-group">
+                    <label for="emergencyDesc">Description</label>
+                    <textarea class="modal-input" id="emergencyDesc" rows="3" placeholder="Describe the emergency situation..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Need Immediate Help?</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="needMedical">
+                            <label for="needMedical">Medical</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="needEvacuation">
+                            <label for="needEvacuation">Evacuation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="needRescue">
+                            <label for="needRescue">Rescue</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="button alert">
+                    <i class="fas fa-paper-plane"></i> Send Emergency Alert
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Leaflet map
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main map
+            const map = L.map('map').setView([3.0449, 101.4455], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add flood markers
+            const floodMarkers = [
+                { lat: 3.0449, lng: 101.4455, popup: 'Flooding reported: 30cm water level' },
+                { lat: 3.0500, lng: 101.4400, popup: 'Relief center: SMK Taman Berkeley' }
+            ];
+
+            floodMarkers.forEach(marker => {
+                L.marker([marker.lat, marker.lng])
+                    .addTo(map)
+                    .bindPopup(marker.popup);
+            });
+
+            // Map controls
+            document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
+            document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
+            document.getElementById('centerMap').addEventListener('click', () => {
+                map.setView([3.0449, 101.4455], 13);
+            });
+
+            // Search functionality
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchTerm = document.getElementById('searchInput').value;
+                const category = document.getElementById('categorySelect').value;
+                const area = document.getElementById('areaSelect').value;
+                
+                // Implement search logic here
+                console.log('Searching for:', { searchTerm, category, area });
+            });
+
+            // Emergency alert functionality
+            document.getElementById('shareAlert').addEventListener('click', function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Emergency Alert: Flood Warning',
+                        text: document.getElementById('alertMessage').textContent,
+                        url: window.location.href
+                    });
+                }
+            });
+
+            // Resource buttons
+            document.querySelectorAll('.resource-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const resourceType = this.closest('.resource-card').dataset.type;
+                    // Implement resource view logic
+                    console.log('Viewing resource:', resourceType);
+                });
+            });
+
+            // Volunteer functionality
+            document.getElementById('signUpButton').addEventListener('click', function() {
+                // Implement volunteer signup logic
+                console.log('Volunteer signup clicked');
+            });
+
+            // Modal functionality
+            const emergencyButton = document.getElementById('emergencyButton');
+            const emergencyModal = document.getElementById('emergencyModal');
+            const closeEmergencyModal = document.getElementById('closeEmergencyModal');
+
+            emergencyButton.addEventListener('click', () => emergencyModal.classList.add('show'));
+            closeEmergencyModal.addEventListener('click', () => emergencyModal.classList.remove('show'));
+
+            // Emergency form submission
+            document.getElementById('emergencyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    type: document.getElementById('emergencyType').value,
+                    location: document.getElementById('emergencyLocation').value,
+                    description: document.getElementById('emergencyDesc').value,
+                    needs: {
+                        medical: document.getElementById('needMedical').checked,
+                        evacuation: document.getElementById('needEvacuation').checked,
+                        rescue: document.getElementById('needRescue').checked
+                    }
+                };
+                
+                // Implement emergency report submission
+                console.log('Emergency report:', formData);
+                emergencyModal.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
